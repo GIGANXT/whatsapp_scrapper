@@ -17,7 +17,8 @@ latest_price_data = {
     'spot_price': None,
     'price_change': None,
     'change_percentage': None,
-    'last_updated': None
+    'last_updated': None,
+    'type': None  # Add type to distinguish between cash settlement and other updates
 }
 
 # Global variable to store the latest company price updates
@@ -383,9 +384,10 @@ def webhook():
             # Update the global price data
             latest_price_data = {
                 'spot_price': price,
-                'price_change': None,  # No change data in this format
-                'change_percentage': None,
-                'last_updated': f"{date} {time}"
+                'price_change': None,  # No change data in cash settlement
+                'change_percentage': None,  # No change data in cash settlement
+                'last_updated': f"{date} {time}",
+                'type': 'cash_settlement'  # Mark as cash settlement
             }
             
             # Format the response
@@ -440,7 +442,8 @@ def webhook():
                 'spot_price': spot_price,
                 'price_change': price_change,
                 'change_percentage': change_percentage,
-                'last_updated': datetime.now().isoformat()
+                'last_updated': datetime.now().isoformat(),
+                'type': 'metal_price'  # Mark as metal price update
             }
             
             # Print the values in a formatted way
